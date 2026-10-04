@@ -8,6 +8,7 @@ import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
 import ResumeModalWrapper from "@/components/ResumeModalWrapper";
+import PortfolioAgent from "@/components/agent/PortfolioAgent";
 
 export default function Home() {
   return (
@@ -23,6 +24,7 @@ export default function Home() {
       </main>
       <Footer />
       <WhatsAppWidget />
+      <PortfolioAgent />
       <ResumeModalWrapper />
     </>
   );

@@ -1,0 +1,36 @@
+[
+  {
+    "id": "lead_sample_02",
+    "name": "Sarah Jenkins",
+    "email": "s.jenkins@retailpulse.com",
+    "company": "RetailPulse Solutions",
+    "serviceRequested": "POS & Inventory Automation",
+    "projectType": "Multi-Store Retail POS",
+    "projectDescription": "Need a modern offline-capable retail POS system with multi-branch synchronization and automated low-stock inventory alerts.",
+    "budgetRange": "$5,000+",
+    "expectedTimeline": "2-3 Months",
+    "status": "NEW",
+    "createdAt": "2026-10-04T07:26:45.992Z",
+    "updatedAt": "2026-10-04T07:26:45.992Z",
+    "source": "ai_agent",
+    "conversationSummary": "Visitor asked about the Cloud-Based Multi-Store POS project and wants a customized implementation for their 4 retail outlets.",
+    "notes": "New automated lead awaiting introductory call."
+  },
+  {
+    "id": "lead_sample_01",
+    "name": "Marcus Vance",
+    "email": "marcus.vance@apexcloud.io",
+    "company": "Apex Cloud Systems",
+    "serviceRequested": "Multi-Tenant SaaS Platforms",
+    "projectType": "Enterprise Cloud Application",
+    "projectDescription": "Looking for an expert to architect a multi-tenant client portal with isolated tenant databases, automated role-based permissions, and Render cloud deployment.",
+    "budgetRange": "$3,000 - $5,000",
+    "expectedTimeline": "1 Month",
+    "status": "QUALIFIED",
+    "createdAt": "2026-10-03T07:26:45.992Z",
+    "updatedAt": "2026-10-03T23:26:45.992Z",
+    "source": "ai_agent",
+    "conversationSummary": "Client inquired about SaaS Multi-Tenant Automation Platform, verified requirements, and completed AI qualification for 1-month delivery.",
+    "notes": "Followed up via email regarding architectural schema."
+  }
+]

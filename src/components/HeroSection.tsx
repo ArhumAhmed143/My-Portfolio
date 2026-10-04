@@ -14,6 +14,12 @@ const ROLES = [
   "AI Developer",
 ];
 
+const SUBTITLES = [
+  "Building scalable web applications, automation systems & AI-powered solutions.",
+  "Engineering multi-tenant SaaS platforms, modern APIs & automated cloud workflows.",
+  "Developing high-performance full-stack applications with Next.js, React & TypeScript.",
+];
+
 export default function HeroSection() {
   const { personal, projects } = portfolioData;
   const shouldReduceMotion = useReducedMotion();
@@ -36,10 +42,7 @@ export default function HeroSection() {
   const [nameCharIndex, setNameCharIndex] = useState(0);
 
   useEffect(() => {
-    if (shouldReduceMotion) {
-      setNameCharIndex(fullName.length);
-      return;
-    }
+    if (shouldReduceMotion) return;
     if (nameCharIndex < fullName.length) {
       const timer = setTimeout(() => {
         setNameCharIndex((prev) => prev + 1);
@@ -48,41 +51,32 @@ export default function HeroSection() {
     }
   }, [nameCharIndex, fullName.length, shouldReduceMotion]);
 
-  const currentNameText = fullName.substring(0, nameCharIndex);
-  const isNameComplete = nameCharIndex >= fullName.length;
+  const currentNameText = shouldReduceMotion ? fullName : fullName.substring(0, nameCharIndex);
+  const isNameComplete = shouldReduceMotion || nameCharIndex >= fullName.length;
 
   // 2. Automated Role Text Animation (Word/Character reveal sequence)
   const [roleIndex, setRoleIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
-    if (shouldReduceMotion) {
-      setCharIndex(ROLES[roleIndex].length);
-      return;
-    }
+    if (shouldReduceMotion) return;
 
     const currentRole = ROLES[roleIndex];
 
-    if (isPaused) {
-      // 700ms pause after complete phrase
+    if (!isDeleting && charIndex === currentRole.length) {
       const pauseTimeout = setTimeout(() => {
-        setIsPaused(false);
         setIsDeleting(true);
       }, 700);
       return () => clearTimeout(pauseTimeout);
     }
 
-    if (!isDeleting && charIndex === currentRole.length) {
-      setIsPaused(true);
-      return;
-    }
-
     if (isDeleting && charIndex === 0) {
-      setIsDeleting(false);
-      setRoleIndex((prev) => (prev + 1) % ROLES.length);
-      return;
+      const switchTimeout = setTimeout(() => {
+        setIsDeleting(false);
+        setRoleIndex((prev) => (prev + 1) % ROLES.length);
+      }, 150);
+      return () => clearTimeout(switchTimeout);
     }
 
     // 38ms typing speed, 18ms fast backspace
@@ -92,47 +86,33 @@ export default function HeroSection() {
     }, speed);
 
     return () => clearTimeout(timeout);
-  }, [charIndex, isDeleting, isPaused, roleIndex, shouldReduceMotion]);
+  }, [charIndex, isDeleting, roleIndex, shouldReduceMotion]);
 
-  const currentRoleText = ROLES[roleIndex].substring(0, charIndex);
+  const currentRoleText = shouldReduceMotion ? ROLES[roleIndex] : ROLES[roleIndex].substring(0, charIndex);
 
   // 3. Automated Subtitle Paragraph Animation (Typewriter with cycling phrases)
-  const SUBTITLES = [
-    "Building scalable web applications, automation systems & AI-powered solutions.",
-    "Engineering multi-tenant SaaS platforms, modern APIs & automated cloud workflows.",
-    "Developing high-performance full-stack applications with Next.js, React & TypeScript.",
-  ];
-
   const [subIndex, setSubIndex] = useState(0);
   const [subCharIndex, setSubCharIndex] = useState(0);
   const [isSubDeleting, setIsSubDeleting] = useState(false);
-  const [isSubPaused, setIsSubPaused] = useState(false);
 
   useEffect(() => {
-    if (shouldReduceMotion) {
-      setSubCharIndex(SUBTITLES[subIndex].length);
-      return;
-    }
+    if (shouldReduceMotion) return;
 
     const currentSub = SUBTITLES[subIndex];
 
-    if (isSubPaused) {
+    if (!isSubDeleting && subCharIndex === currentSub.length) {
       const pauseTimeout = setTimeout(() => {
-        setIsSubPaused(false);
         setIsSubDeleting(true);
       }, 2600);
       return () => clearTimeout(pauseTimeout);
     }
 
-    if (!isSubDeleting && subCharIndex === currentSub.length) {
-      setIsSubPaused(true);
-      return;
-    }
-
     if (isSubDeleting && subCharIndex === 0) {
-      setIsSubDeleting(false);
-      setSubIndex((prev) => (prev + 1) % SUBTITLES.length);
-      return;
+      const switchTimeout = setTimeout(() => {
+        setIsSubDeleting(false);
+        setSubIndex((prev) => (prev + 1) % SUBTITLES.length);
+      }, 200);
+      return () => clearTimeout(switchTimeout);
     }
 
     const speed = isSubDeleting ? 12 : 24;
@@ -141,9 +121,9 @@ export default function HeroSection() {
     }, speed);
 
     return () => clearTimeout(timeout);
-  }, [subCharIndex, isSubDeleting, isSubPaused, subIndex, shouldReduceMotion]);
+  }, [subCharIndex, isSubDeleting, subIndex, shouldReduceMotion]);
 
-  const currentSubText = SUBTITLES[subIndex].substring(0, subCharIndex);
+  const currentSubText = shouldReduceMotion ? SUBTITLES[subIndex] : SUBTITLES[subIndex].substring(0, subCharIndex);
 
   return (
     <section
@@ -343,9 +323,22 @@ export default function HeroSection() {
               >
                 <WhatsAppIcon className="w-5 h-5 fill-current" />
               </a>
-              <span className="text-xs text-slate-500 font-mono pl-1">
-                {personal.email}
-              </span>
+              {/* Direct Mail Action with Mail Logo — Opens Mail Inbox */}
+              <a
+                href={`mailto:${personal.email}?subject=${encodeURIComponent(
+                  "Software Project Inquiry — Ghulam Ahmed"
+                )}`}
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/25 hover:border-emerald-400 text-slate-300 hover:text-white transition-all duration-200 group cursor-pointer shadow-[0_0_12px_rgba(16,185,129,0.12)] hover:shadow-[0_0_20px_rgba(16,185,129,0.25)]"
+                title={`Open email inbox / send message to ${personal.email}`}
+                aria-label="Open Mail Inbox"
+              >
+                <div className="w-5 h-5 rounded-md bg-emerald-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Mail className="w-3.5 h-3.5 text-emerald-400 group-hover:text-white transition-colors" />
+                </div>
+                <span className="text-xs font-mono text-slate-300 group-hover:text-emerald-300 transition-colors">
+                  {personal.email}
+                </span>
+              </a>
             </motion.div>
           </div>
 

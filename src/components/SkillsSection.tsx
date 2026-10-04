@@ -73,11 +73,30 @@ export default function SkillsSection() {
                     >
                       <div className="flex items-center justify-between gap-2 mb-1">
                         <span className="font-medium text-slate-200 text-xs sm:text-sm">{skill.name}</span>
-                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/8 text-slate-400 shrink-0">
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 shrink-0">
                           {skill.level}
                         </span>
                       </div>
                       <p className="text-xs text-slate-500 leading-snug">{skill.desc}</p>
+                      {/* Animated skill progress bar */}
+                      <div className="w-full bg-white/[0.08] rounded-full h-1 mt-2.5 overflow-hidden">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          whileInView={{
+                            width:
+                              skill.level === "Daily Driver"
+                                ? "98%"
+                                : skill.level === "Strong"
+                                ? "94%"
+                                : skill.level === "Comfortable"
+                                ? "88%"
+                                : "78%",
+                          }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.85, delay: 0.2 + sIdx * 0.04, ease: "easeOut" }}
+                          className="h-full bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-300 rounded-full shadow-[0_0_8px_rgba(16,185,129,0.5)]"
+                        />
+                      </div>
                     </motion.div>
                   ))}
                 </div>

@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Mail, Sparkles, Bot, Code, Cpu } from "lucide-react";
+import { ArrowRight, Mail, Sparkles, Bot, Code, Cpu, FileText } from "lucide-react";
 import { GithubIcon, LinkedinIcon, WhatsAppIcon } from "./Icons";
 import { portfolioData } from "@/data/portfolioData";
 
@@ -31,7 +31,27 @@ export default function HeroSection() {
     });
   };
 
-  // Automated Role Text Animation (Word/Character reveal sequence)
+  // 1. Automated Name Text Animation (Types out on mount character by character)
+  const fullName = personal.name; // "Ghulam Ahmed"
+  const [nameCharIndex, setNameCharIndex] = useState(0);
+
+  useEffect(() => {
+    if (shouldReduceMotion) {
+      setNameCharIndex(fullName.length);
+      return;
+    }
+    if (nameCharIndex < fullName.length) {
+      const timer = setTimeout(() => {
+        setNameCharIndex((prev) => prev + 1);
+      }, 65);
+      return () => clearTimeout(timer);
+    }
+  }, [nameCharIndex, fullName.length, shouldReduceMotion]);
+
+  const currentNameText = fullName.substring(0, nameCharIndex);
+  const isNameComplete = nameCharIndex >= fullName.length;
+
+  // 2. Automated Role Text Animation (Word/Character reveal sequence)
   const [roleIndex, setRoleIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -46,7 +66,7 @@ export default function HeroSection() {
     const currentRole = ROLES[roleIndex];
 
     if (isPaused) {
-      // 700ms pause after complete phrase (500–800ms)
+      // 700ms pause after complete phrase
       const pauseTimeout = setTimeout(() => {
         setIsPaused(false);
         setIsDeleting(true);
@@ -65,7 +85,7 @@ export default function HeroSection() {
       return;
     }
 
-    // 38ms typing speed (30–50ms requirement), 18ms fast transition back
+    // 38ms typing speed, 18ms fast backspace
     const speed = isDeleting ? 18 : 38;
     const timeout = setTimeout(() => {
       setCharIndex((prev) => prev + (isDeleting ? -1 : 1));
@@ -75,6 +95,55 @@ export default function HeroSection() {
   }, [charIndex, isDeleting, isPaused, roleIndex, shouldReduceMotion]);
 
   const currentRoleText = ROLES[roleIndex].substring(0, charIndex);
+
+  // 3. Automated Subtitle Paragraph Animation (Typewriter with cycling phrases)
+  const SUBTITLES = [
+    "Building scalable web applications, automation systems & AI-powered solutions.",
+    "Engineering multi-tenant SaaS platforms, modern APIs & automated cloud workflows.",
+    "Developing high-performance full-stack applications with Next.js, React & TypeScript.",
+  ];
+
+  const [subIndex, setSubIndex] = useState(0);
+  const [subCharIndex, setSubCharIndex] = useState(0);
+  const [isSubDeleting, setIsSubDeleting] = useState(false);
+  const [isSubPaused, setIsSubPaused] = useState(false);
+
+  useEffect(() => {
+    if (shouldReduceMotion) {
+      setSubCharIndex(SUBTITLES[subIndex].length);
+      return;
+    }
+
+    const currentSub = SUBTITLES[subIndex];
+
+    if (isSubPaused) {
+      const pauseTimeout = setTimeout(() => {
+        setIsSubPaused(false);
+        setIsSubDeleting(true);
+      }, 2600);
+      return () => clearTimeout(pauseTimeout);
+    }
+
+    if (!isSubDeleting && subCharIndex === currentSub.length) {
+      setIsSubPaused(true);
+      return;
+    }
+
+    if (isSubDeleting && subCharIndex === 0) {
+      setIsSubDeleting(false);
+      setSubIndex((prev) => (prev + 1) % SUBTITLES.length);
+      return;
+    }
+
+    const speed = isSubDeleting ? 12 : 24;
+    const timeout = setTimeout(() => {
+      setSubCharIndex((prev) => prev + (isSubDeleting ? -1 : 1));
+    }, speed);
+
+    return () => clearTimeout(timeout);
+  }, [subCharIndex, isSubDeleting, isSubPaused, subIndex, shouldReduceMotion]);
+
+  const currentSubText = SUBTITLES[subIndex].substring(0, subCharIndex);
 
   return (
     <section
@@ -150,22 +219,29 @@ export default function HeroSection() {
               <span>Software Department Intern @ Revive Medical Technologies</span>
             </motion.div>
 
-            {/* 2. Name: Ghulam Ahmed (Visually Dominant, Bold, Modern) */}
-            <motion.h1
+            {/* 2. Name: Ghulam Ahmed (Automated Character Typing Animation) */}
+            <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.08, ease: "easeOut" }}
-              className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tight text-white leading-none mb-3 sm:mb-4"
+              className="mb-3 sm:mb-4 min-h-[44px] sm:min-h-[64px] lg:min-h-[82px] flex items-center justify-center lg:justify-start"
             >
-              Ghulam Ahmed
-            </motion.h1>
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tight text-white leading-none flex items-center">
+                <span className="bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
+                  {currentNameText}
+                </span>
+                {!isNameComplete && (
+                  <span className="inline-block w-[3px] sm:w-1 h-7 sm:h-11 lg:h-14 bg-emerald-400 ml-1.5 sm:ml-2.5 animate-pulse rounded-full shadow-[0_0_15px_#10b981]" />
+                )}
+              </h1>
+            </motion.div>
 
             {/* 3. Automated Role Text Animation */}
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.16, ease: "easeOut" }}
-              className="h-10 sm:h-12 lg:h-14 flex items-center mb-4 sm:mb-5"
+              className="h-10 sm:h-12 lg:h-14 flex items-center mb-4 sm:mb-5 justify-center lg:justify-start"
             >
               <span className="text-2xl sm:text-3xl lg:text-4xl xl:text-[42px] font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-200 bg-clip-text text-transparent">
                 {currentRoleText}
@@ -173,36 +249,55 @@ export default function HeroSection() {
               <span className="inline-block w-[3px] sm:w-1 h-6 sm:h-8 lg:h-9 bg-emerald-400 ml-1.5 animate-pulse rounded-full shadow-[0_0_12px_#10b981]" />
             </motion.div>
 
-            {/* 4. Short Subtitle (1-2 lines maximum) */}
-            <motion.p
+            {/* 4. Automated Subtitle Paragraph Animation (Typewriter with cycling phrases) */}
+            <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.24, ease: "easeOut" }}
-              className="text-slate-300 sm:text-slate-400 text-base sm:text-lg lg:text-xl font-normal leading-relaxed max-w-xl mb-7 sm:mb-9"
+              className="min-h-[60px] sm:min-h-[70px] flex items-start mb-6 sm:mb-8 max-w-xl text-center lg:text-left justify-center lg:justify-start"
             >
-              Building scalable web applications, automation systems &amp; AI-powered solutions.
-            </motion.p>
+              <p className="text-slate-300 sm:text-slate-400 text-base sm:text-lg lg:text-xl font-normal leading-relaxed">
+                <span>{currentSubText}</span>
+                <span className="inline-block w-1.5 sm:w-2 h-4 sm:h-5 bg-emerald-400/80 ml-1 animate-pulse align-middle rounded-sm shadow-[0_0_8px_#10b981]" />
+              </p>
+            </motion.div>
 
-            {/* 5. Two Modern CTA Buttons: [ View Projects ] and [ Hire Me ] */}
+            {/* 5. Modern CTA Buttons: [ View Projects ], [ Resume / CV ], and [ Hire Me ] */}
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.32, ease: "easeOut" }}
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-3.5 sm:gap-4 w-full sm:w-auto"
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-3.5 w-full sm:w-auto"
             >
               {/* View Projects */}
               <a
                 href="#projects"
-                className="w-full sm:w-auto px-6 sm:px-7 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-semibold text-sm sm:text-base inline-flex items-center justify-center gap-2.5 shadow-[0_0_20px_rgba(16,185,129,0.35)] hover:shadow-[0_0_30px_rgba(16,185,129,0.55)] hover:scale-[1.03] active:scale-[0.98] transition-all duration-200 group"
+                className="w-full sm:w-auto px-5 sm:px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-semibold text-sm sm:text-base inline-flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(16,185,129,0.35)] hover:shadow-[0_0_30px_rgba(16,185,129,0.55)] hover:scale-[1.03] active:scale-[0.98] transition-all duration-200 group"
               >
                 <span>View Projects</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </a>
 
+              {/* Resume / CV Button — Opens Interactive Viewer & Direct Download */}
+              <a
+                href="#resume"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (typeof window !== "undefined") {
+                    window.dispatchEvent(new CustomEvent("open-resume-modal"));
+                  }
+                }}
+                className="w-full sm:w-auto px-5 sm:px-6 py-3.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/40 hover:border-emerald-400 text-emerald-300 hover:text-white font-semibold text-sm sm:text-base inline-flex items-center justify-center gap-2.5 hover:scale-[1.03] active:scale-[0.98] transition-all duration-200 shadow-[0_0_15px_rgba(16,185,129,0.15)] hover:shadow-[0_0_25px_rgba(16,185,129,0.3)] group cursor-pointer"
+                title="View and Download Official Resume"
+              >
+                <FileText className="w-4 h-4 text-emerald-400 transition-transform group-hover:scale-110" />
+                <span>Resume / CV</span>
+              </a>
+
               {/* Hire Me */}
               <a
                 href="#contact"
-                className="w-full sm:w-auto px-6 sm:px-7 py-3.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/15 hover:border-emerald-500/50 text-slate-200 hover:text-white font-semibold text-sm sm:text-base inline-flex items-center justify-center gap-2.5 hover:scale-[1.03] active:scale-[0.98] transition-all duration-200 shadow-lg shadow-black/20 group"
+                className="w-full sm:w-auto px-5 sm:px-6 py-3.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/15 hover:border-emerald-500/50 text-slate-200 hover:text-white font-semibold text-sm sm:text-base inline-flex items-center justify-center gap-2 hover:scale-[1.03] active:scale-[0.98] transition-all duration-200 shadow-lg shadow-black/20 group"
               >
                 <Mail className="w-4 h-4 text-emerald-400 transition-transform group-hover:scale-110" />
                 <span>Hire Me</span>
@@ -255,20 +350,61 @@ export default function HeroSection() {
           </div>
 
           {/* ==================== RIGHT SIDE ==================== */}
-          {/* Modern Visual Profile Card with Animated Border & Floating Badges */}
+          {/* Modern Visual Profile Card that "flies in" with dynamic 3D physics and continuous floating levitation */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.94 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-            className="flex justify-center items-center mt-6 lg:mt-0"
+            initial={{
+              opacity: 0,
+              x: 280,
+              y: -120,
+              scale: 0.45,
+              rotateZ: 16,
+              rotateY: 35,
+            }}
+            animate={{
+              opacity: 1,
+              x: 0,
+              y: 0,
+              scale: 1,
+              rotateZ: 0,
+              rotateY: 0,
+            }}
+            transition={{
+              type: "spring",
+              stiffness: 45,
+              damping: 11,
+              mass: 1.15,
+              delay: 0.25,
+            }}
+            className="flex justify-center items-center mt-6 lg:mt-0 [perspective:1000px]"
           >
-            <div className="relative group w-full max-w-[320px] sm:max-w-[360px] lg:max-w-[400px]">
-              {/* Subtle animated ambient glow ring */}
-              <div className="absolute -inset-1.5 rounded-[2rem] bg-gradient-to-r from-emerald-500/35 via-teal-500/25 to-emerald-400/35 opacity-70 blur-xl group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+            {/* Continuous 3D Floating Levitation */}
+            <motion.div
+              animate={
+                shouldReduceMotion
+                  ? {}
+                  : {
+                      y: [-11, 11, -11],
+                      rotateZ: [-1.2, 1.2, -1.2],
+                      rotateY: [-2.5, 2.5, -2.5],
+                    }
+              }
+              transition={{
+                duration: 5.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="relative group w-full max-w-[320px] sm:max-w-[360px] lg:max-w-[400px]"
+            >
+              {/* Dynamic Rotating Ambient Glow Halo Ring */}
+              <motion.div
+                animate={shouldReduceMotion ? {} : { rotate: 360 }}
+                transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+                className="absolute -inset-2.5 rounded-[2.2rem] bg-gradient-to-r from-emerald-500/40 via-teal-400/30 to-emerald-400/40 opacity-70 blur-xl group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+              />
 
               {/* Modern Rounded Rectangle Card Frame */}
-              <div className="relative rounded-[2rem] p-2 sm:p-2.5 bg-gradient-to-b from-white/15 via-white/[0.04] to-white/[0.01] border border-white/15 shadow-2xl backdrop-blur-md">
-                {/* Image Container */}
+              <div className="relative rounded-[2rem] p-2 sm:p-2.5 bg-gradient-to-b from-white/20 via-white/[0.05] to-white/[0.01] border border-white/20 shadow-2xl backdrop-blur-md transition-all duration-300 group-hover:border-emerald-500/50">
+                {/* Image Container with specular hover shine */}
                 <div className="relative w-full aspect-[4/5] rounded-[1.6rem] overflow-hidden shadow-inner bg-slate-900">
                   <Image
                     src={personal.profilePicture}
@@ -283,47 +419,79 @@ export default function HeroSection() {
                 </div>
               </div>
 
-              {/* ===== SUBTLE FLOATING UI BADGES AROUND THE IMAGE ===== */}
-              {/* 1. </> Floating badge (Top Left) */}
+              {/* ===== FLYING SATELLITE BADGES ===== */}
+              {/* 1. </> Floating badge (Top Left) — Flying in */}
               <motion.div
-                animate={shouldReduceMotion ? {} : { y: [-5, 5, -5], rotate: [-2, 2, -2] }}
-                transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-3 -left-3 sm:-left-5 px-3 py-1.5 rounded-xl bg-[#0e1322]/95 border border-emerald-500/40 backdrop-blur-md shadow-xl text-emerald-400 font-mono text-xs sm:text-sm font-bold flex items-center gap-1.5 pointer-events-none z-20"
+                initial={{ opacity: 0, x: -70, y: -50, scale: 0.4 }}
+                animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+                transition={{ type: "spring", stiffness: 60, damping: 10, delay: 0.6 }}
+                className="absolute -top-3 -left-3 sm:-left-5 z-20 pointer-events-none"
               >
-                <Code className="w-3.5 h-3.5 text-emerald-400" />
-                <span>&lt; / &gt;</span>
+                <motion.div
+                  animate={shouldReduceMotion ? {} : { y: [-5, 5, -5], rotate: [-2, 2, -2] }}
+                  transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
+                  className="px-3 py-1.5 rounded-xl bg-[#0e1322]/95 border border-emerald-500/40 backdrop-blur-md shadow-xl text-emerald-400 font-mono text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-[0_0_15px_rgba(16,185,129,0.2)]"
+                >
+                  <Code className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>&lt; / &gt;</span>
+                </motion.div>
               </motion.div>
 
-              {/* 2. AI Floating badge (Top Right) */}
+              {/* 2. AI Floating badge (Top Right) — Flying in */}
               <motion.div
-                animate={shouldReduceMotion ? {} : { y: [5, -5, 5], rotate: [2, -2, 2] }}
-                transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-6 -right-3 sm:-right-5 px-3 py-1.5 rounded-xl bg-[#0e1322]/95 border border-teal-500/40 backdrop-blur-md shadow-xl text-teal-300 font-mono text-xs sm:text-sm font-bold flex items-center gap-1.5 pointer-events-none z-20"
+                initial={{ opacity: 0, x: 70, y: -50, scale: 0.4 }}
+                animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+                transition={{ type: "spring", stiffness: 60, damping: 10, delay: 0.75 }}
+                className="absolute top-6 -right-3 sm:-right-5 z-20 pointer-events-none"
               >
-                <Sparkles className="w-3.5 h-3.5 text-teal-400" />
-                <span>AI</span>
+                <motion.div
+                  animate={shouldReduceMotion ? {} : { y: [5, -5, 5], rotate: [2, -2, 2] }}
+                  transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut" }}
+                  className="px-3 py-1.5 rounded-xl bg-[#0e1322]/95 border border-teal-500/40 backdrop-blur-md shadow-xl text-teal-300 font-mono text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-[0_0_15px_rgba(20,184,166,0.3)]"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-teal-400" />
+                  <span>AI</span>
+                </motion.div>
               </motion.div>
 
-              {/* 3. FULL STACK Floating badge (Bottom Left) */}
+              {/* 3. FULL STACK Floating badge (Bottom Left) — Flying in */}
               <motion.div
-                animate={shouldReduceMotion ? {} : { y: [-6, 6, -6], rotate: [1.5, -1.5, 1.5] }}
-                transition={{ duration: 4.6, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute bottom-10 -left-4 sm:-left-6 px-3 py-1.5 rounded-xl bg-[#0e1322]/95 border border-white/15 backdrop-blur-md shadow-xl text-slate-200 font-mono text-[10px] sm:text-xs font-semibold tracking-wider uppercase flex items-center gap-1.5 pointer-events-none z-20"
+                initial={{ opacity: 0, x: -70, y: 50, scale: 0.4 }}
+                animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+                transition={{ type: "spring", stiffness: 60, damping: 10, delay: 0.9 }}
+                className="absolute bottom-10 -left-4 sm:-left-6 z-20 pointer-events-none"
               >
-                <Cpu className="w-3.5 h-3.5 text-emerald-400" />
-                <span>FULL STACK</span>
+                <motion.div
+                  animate={shouldReduceMotion ? {} : { y: [-6, 6, -6], rotate: [1.5, -1.5, 1.5] }}
+                  transition={{ duration: 4.6, repeat: Infinity, ease: "easeInOut" }}
+                  className="px-3 py-1.5 rounded-xl bg-[#0e1322]/95 border border-white/20 backdrop-blur-md shadow-xl text-slate-200 font-mono text-[10px] sm:text-xs font-semibold tracking-wider uppercase flex items-center gap-1.5"
+                >
+                  <Cpu className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>FULL STACK</span>
+                </motion.div>
               </motion.div>
 
-              {/* 4. AUTOMATION Floating badge (Bottom Right) */}
+              {/* 4. AUTOMATION Floating badge (Bottom Right) — Flying in with live pulsing indicator */}
               <motion.div
-                animate={shouldReduceMotion ? {} : { y: [6, -6, 6], rotate: [-1.5, 1.5, -1.5] }}
-                transition={{ duration: 5.1, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -bottom-3 -right-2 sm:-right-4 px-3.5 py-1.5 rounded-xl bg-emerald-950/95 border border-emerald-500/50 backdrop-blur-md shadow-xl text-emerald-400 font-mono text-[10px] sm:text-xs font-semibold tracking-wider uppercase flex items-center gap-1.5 pointer-events-none z-20"
+                initial={{ opacity: 0, x: 70, y: 50, scale: 0.4 }}
+                animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+                transition={{ type: "spring", stiffness: 60, damping: 10, delay: 1.05 }}
+                className="absolute -bottom-3 -right-2 sm:-right-4 z-20 pointer-events-none"
               >
-                <Bot className="w-3.5 h-3.5 text-emerald-400" />
-                <span>AUTOMATION</span>
+                <motion.div
+                  animate={shouldReduceMotion ? {} : { y: [6, -6, 6], rotate: [-1.5, 1.5, -1.5] }}
+                  transition={{ duration: 5.1, repeat: Infinity, ease: "easeInOut" }}
+                  className="px-3.5 py-1.5 rounded-xl bg-emerald-950/95 border border-emerald-500/50 backdrop-blur-md shadow-[0_0_20px_rgba(16,185,129,0.3)] text-emerald-400 font-mono text-[10px] sm:text-xs font-semibold tracking-wider uppercase flex items-center gap-2"
+                >
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  </span>
+                  <Bot className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>AUTOMATION</span>
+                </motion.div>
               </motion.div>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
 

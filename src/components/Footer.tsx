@@ -13,9 +13,22 @@ export default function Footer() {
   return (
     <footer className="border-t border-white/8 py-8 sm:py-10 px-4 sm:px-6 lg:px-8 bg-[#0a0a1a]">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 text-center md:text-left">
-        {/* Brand */}
-        <div className="font-bold text-base sm:text-lg text-white">
-          {personal.name}
+        {/* Brand & Resume */}
+        <div className="flex items-center gap-3">
+          <div className="font-bold text-base sm:text-lg text-white">
+            {personal.name}
+          </div>
+          <button
+            type="button"
+            onClick={() => {
+              if (typeof window !== "undefined") {
+                window.dispatchEvent(new CustomEvent("open-resume-modal"));
+              }
+            }}
+            className="text-xs text-emerald-400 hover:text-emerald-300 underline underline-offset-4 cursor-pointer"
+          >
+            View Resume
+          </button>
         </div>
 
         {/* Quick Info */}

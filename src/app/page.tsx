@@ -7,6 +7,7 @@ import TimelineSection from "@/components/TimelineSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
+import ResumeModalWrapper from "@/components/ResumeModalWrapper";
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
       </main>
       <Footer />
       <WhatsAppWidget />
+      <ResumeModalWrapper />
     </>
   );
 }

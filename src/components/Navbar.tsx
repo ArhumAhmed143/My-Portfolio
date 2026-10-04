@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { Menu, X, ArrowUpRight, FileText } from "lucide-react";
 
 const navLinks = [
   { name: "About", href: "#about" },
@@ -54,7 +54,22 @@ export default function Navbar() {
         </nav>
 
         {/* Desktop CTA */}
-        <div className="hidden md:flex items-center">
+        <div className="hidden md:flex items-center gap-2.5">
+          <a
+            href="#resume"
+            onClick={(e) => {
+              e.preventDefault();
+              if (typeof window !== "undefined") {
+                window.dispatchEvent(new CustomEvent("open-resume-modal"));
+              }
+            }}
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-sm font-medium text-emerald-300 hover:text-white bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 hover:border-emerald-400 transition-all hover:scale-[1.03] active:scale-[0.98] cursor-pointer"
+            title="View Resume / CV"
+          >
+            <FileText className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Resume</span>
+          </a>
+
           <a
             href="#contact"
             className="inline-flex items-center gap-2 px-4 lg:px-5 py-2 lg:py-2 rounded-full text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.25)] hover:shadow-[0_0_20px_rgba(16,185,129,0.4)] transition-all hover:scale-[1.03] active:scale-[0.98]"
@@ -95,13 +110,29 @@ export default function Navbar() {
                   {link.name}
                 </a>
               ))}
-              <a
-                href="#contact"
-                onClick={() => setMobileMenuOpen(false)}
-                className="mt-3 text-center px-4 py-3 rounded-lg text-base font-semibold text-white bg-emerald-600 hover:bg-emerald-500 transition-colors"
-              >
-                Hire Me
-              </a>
+              <div className="grid grid-cols-2 gap-2.5 mt-3">
+                <a
+                  href="#resume"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setMobileMenuOpen(false);
+                    if (typeof window !== "undefined") {
+                      window.dispatchEvent(new CustomEvent("open-resume-modal"));
+                    }
+                  }}
+                  className="flex items-center justify-center gap-2 px-4 py-3 rounded-lg text-base font-semibold text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 hover:bg-emerald-500/25 transition-colors"
+                >
+                  <FileText className="w-4 h-4 text-emerald-400" />
+                  <span>Resume</span>
+                </a>
+                <a
+                  href="#contact"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-center px-4 py-3 rounded-lg text-base font-semibold text-white bg-emerald-600 hover:bg-emerald-500 transition-colors"
+                >
+                  Hire Me
+                </a>
+              </div>
             </div>
           </motion.div>
         )}

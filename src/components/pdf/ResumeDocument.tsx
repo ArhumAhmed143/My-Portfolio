@@ -6,179 +6,185 @@ import {
   Text,
   View,
   StyleSheet,
-  Image,
   Link,
 } from "@react-pdf/renderer";
 import { PortfolioData } from "@/data/portfolioData";
 
 const styles = StyleSheet.create({
   page: {
-    flexDirection: "row",
     backgroundColor: "#ffffff",
     fontFamily: "Helvetica",
-    padding: 0,
-  },
-  sidebar: {
-    width: "33%",
-    backgroundColor: "#0f172a", // Dark Slate Blue
-    color: "#f8fafc",
-    padding: 20,
-    flexDirection: "column",
-  },
-  main: {
-    width: "67%",
-    padding: 24,
-    backgroundColor: "#ffffff",
-    color: "#1e293b",
-  },
-  avatarContainer: {
-    alignItems: "center",
-    marginBottom: 16,
-  },
-  avatar: {
-    width: 90,
-    height: 90,
-    borderRadius: 45,
-    borderWidth: 3,
-    borderColor: "#2cb67d",
-  },
-  sidebarName: {
-    fontSize: 18,
-    fontFamily: "Helvetica-Bold",
-    color: "#ffffff",
-    textAlign: "center",
-    marginBottom: 4,
-  },
-  sidebarTitle: {
-    fontSize: 10,
-    fontFamily: "Helvetica",
-    color: "#2cb67d", // Emerald Accent
-    textAlign: "center",
-    marginBottom: 16,
-    textTransform: "uppercase",
-    letterSpacing: 0.5,
-  },
-  sidebarSectionTitle: {
-    fontSize: 11,
-    fontFamily: "Helvetica-Bold",
-    color: "#2cb67d",
-    borderBottomWidth: 1,
-    borderBottomColor: "#334155",
-    paddingBottom: 4,
-    marginTop: 12,
-    marginBottom: 8,
-    textTransform: "uppercase",
-    letterSpacing: 0.5,
-  },
-  contactItem: {
-    fontSize: 8.5,
-    color: "#cbd5e1",
-    marginBottom: 6,
+    paddingTop: 30,
+    paddingBottom: 30,
+    paddingHorizontal: 36,
+    fontSize: 9,
+    color: "#000000",
     lineHeight: 1.3,
   },
-  contactLabel: {
-    fontFamily: "Helvetica-Bold",
-    color: "#94a3b8",
-    fontSize: 7.5,
-    textTransform: "uppercase",
-    marginBottom: 1,
-  },
-  link: {
-    color: "#38d99a",
-    textDecoration: "none",
-  },
-  techBadgeContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 4,
-    marginTop: 4,
-  },
-  techBadge: {
-    backgroundColor: "#1e293b",
-    borderWidth: 1,
-    borderColor: "#334155",
-    borderRadius: 4,
-    paddingVertical: 2,
-    paddingHorizontal: 6,
-    fontSize: 7.5,
-    color: "#e2e8f0",
-  },
-
-  // Main Content Styles
-  headerName: {
-    fontSize: 22,
-    fontFamily: "Helvetica-Bold",
-    color: "#0f172a",
-    marginBottom: 2,
-  },
-  headerTitle: {
-    fontSize: 12,
-    fontFamily: "Helvetica-Bold",
-    color: "#2cb67d",
+  // Centered Header — properly structured to eliminate any vertical overlap
+  header: {
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 12,
+    paddingBottom: 4,
   },
-  mainSectionTitle: {
-    fontSize: 12,
+  name: {
+    fontSize: 20,
     fontFamily: "Helvetica-Bold",
-    color: "#0f172a",
-    borderBottomWidth: 2,
-    borderBottomColor: "#2cb67d",
-    paddingBottom: 3,
-    marginTop: 12,
-    marginBottom: 8,
+    letterSpacing: 1.2,
     textTransform: "uppercase",
-    letterSpacing: 0.5,
-  },
-  summaryText: {
-    fontSize: 9,
-    color: "#475569",
-    lineHeight: 1.5,
+    color: "#000000",
+    lineHeight: 1.2,
     marginBottom: 6,
+    textAlign: "center",
   },
-
-  // Item blocks
-  blockItem: {
-    marginBottom: 10,
-  },
-  blockHeaderRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "baseline",
-    marginBottom: 2,
-  },
-  blockTitle: {
+  title: {
     fontSize: 10,
     fontFamily: "Helvetica-Bold",
-    color: "#0f172a",
+    letterSpacing: 1.4,
+    textTransform: "uppercase",
+    color: "#000000",
+    lineHeight: 1.2,
+    marginBottom: 6,
+    textAlign: "center",
   },
-  blockSubtitle: {
-    fontSize: 8.5,
+  contactLine: {
+    fontSize: 8.8,
+    color: "#000000",
+    lineHeight: 1.2,
+    textAlign: "center",
+  },
+  contactLink: {
+    color: "#0000ee",
+    textDecoration: "underline",
+  },
+
+  // Section Headers
+  sectionContainer: {
+    marginTop: 6,
+    marginBottom: 3,
+  },
+  sectionTitle: {
+    fontSize: 10.5,
     fontFamily: "Helvetica-Bold",
-    color: "#2cb67d",
+    color: "#000000",
     marginBottom: 2,
   },
-  blockDate: {
-    fontSize: 8,
-    fontFamily: "Helvetica-Oblique",
-    color: "#64748b",
+  sectionTitleUpper: {
+    fontSize: 10.5,
+    fontFamily: "Helvetica-Bold",
+    color: "#000000",
+    textTransform: "uppercase",
+    marginBottom: 2,
   },
-  blockDescription: {
-    fontSize: 8.5,
-    color: "#475569",
-    lineHeight: 1.4,
+  horizontalRule: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#000000",
+    marginBottom: 5,
+  },
+
+  // Objective
+  objectiveText: {
+    fontSize: 8.8,
+    color: "#111111",
+    lineHeight: 1.34,
+    marginBottom: 4,
+    textAlign: "justify",
+  },
+
+  // Bullet Items
+  bulletItem: {
+    flexDirection: "row",
+    marginBottom: 2,
   },
   bulletPoint: {
-    fontSize: 8,
-    color: "#475569",
-    marginLeft: 6,
-    marginBottom: 2,
-    lineHeight: 1.3,
-  },
-  projectTechList: {
-    fontSize: 7.5,
+    width: 9,
+    fontSize: 9.5,
     fontFamily: "Helvetica-Bold",
-    color: "#0f766e",
+    color: "#000000",
+  },
+  bulletText: {
+    flex: 1,
+    fontSize: 9,
+    fontFamily: "Helvetica-Bold",
+    color: "#000000",
+  },
+
+  // Indented Project Box
+  projectSubBlock: {
+    marginLeft: 10,
     marginTop: 2,
+    marginBottom: 5,
+  },
+  projectDescription: {
+    fontSize: 8.4,
+    color: "#111111",
+    lineHeight: 1.32,
+    marginBottom: 3,
+    textAlign: "justify",
+  },
+  projectSubHeading: {
+    fontSize: 8.5,
+    fontFamily: "Helvetica-Bold",
+    color: "#000000",
+    marginTop: 2,
+    marginBottom: 1,
+  },
+  projectTechLine: {
+    fontSize: 8.3,
+    color: "#111111",
+    lineHeight: 1.28,
+  },
+
+  // Experience & Education Row Blocks
+  itemBlock: {
+    marginBottom: 4,
+  },
+  twoColRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 1,
+  },
+  orgName: {
+    fontSize: 9,
+    fontFamily: "Helvetica-Bold",
+    color: "#000000",
+    textTransform: "uppercase",
+  },
+  itemDates: {
+    fontSize: 9,
+    fontFamily: "Helvetica-Bold",
+    color: "#000000",
+  },
+  roleName: {
+    fontSize: 8.6,
+    fontFamily: "Helvetica-Bold",
+    color: "#222222",
+    marginBottom: 1,
+  },
+  subDetailText: {
+    fontSize: 8.3,
+    color: "#333333",
+    lineHeight: 1.28,
+    marginLeft: 6,
+  },
+
+  // Skills Line
+  skillLine: {
+    flexDirection: "row",
+    marginBottom: 2.5,
+  },
+  skillCategoryTitle: {
+    fontSize: 8.7,
+    fontFamily: "Helvetica-Bold",
+    color: "#000000",
+  },
+  skillItemsText: {
+    fontSize: 8.7,
+    fontFamily: "Helvetica",
+    color: "#111111",
   },
 });
 
@@ -187,170 +193,181 @@ interface ResumeDocumentProps {
 }
 
 export const ResumeDocument: React.FC<ResumeDocumentProps> = ({ data }) => {
-  const {
-    personal,
-    technologies,
-    education,
-    languages,
-    certifications,
-    achievements,
-    experience,
-    projects,
-  } = data;
+  const { personal } = data;
 
   return (
-    <Document title={`${personal.name} - Resume`} author={personal.name}>
+    <Document
+      title={`${personal.name} - Resume`}
+      author={personal.name}
+      subject="Software Engineer Resume"
+      keywords="Software Engineer, Full-Stack Developer, Next.js, React, Node.js, POS System"
+    >
       <Page size="A4" style={styles.page}>
-        {/* LEFT SIDEBAR */}
-        <View style={styles.sidebar}>
-          {/* Profile Picture */}
-          <View style={styles.avatarContainer}>
-            <Image src={personal.profilePicture} style={styles.avatar} />
+        {/* ================= 1. HEADER (CENTERED, STRICT VERTICAL SEPARATION) ================= */}
+        <View style={styles.header}>
+          <View style={{ marginBottom: 4 }}>
+            <Text style={styles.name}>{personal.name}</Text>
           </View>
-
-          {/* Name & Title */}
-          <Text style={styles.sidebarName}>{personal.name}</Text>
-          <Text style={styles.sidebarTitle}>{personal.title}</Text>
-
-          {/* Contact Information */}
-          <Text style={styles.sidebarSectionTitle}>Contact</Text>
-
-          <View style={{ marginBottom: 6 }}>
-            <Text style={styles.contactLabel}>Email</Text>
-            <Link href={`mailto:${personal.email}`} style={styles.link}>
-              <Text style={styles.contactItem}>{personal.email}</Text>
-            </Link>
+          <View style={{ marginBottom: 4 }}>
+            <Text style={styles.title}>SOFTWARE ENGINEER</Text>
           </View>
-
-          <View style={{ marginBottom: 6 }}>
-            <Text style={styles.contactLabel}>Phone</Text>
-            <Text style={styles.contactItem}>{personal.phone}</Text>
-          </View>
-
-          <View style={{ marginBottom: 6 }}>
-            <Text style={styles.contactLabel}>Location</Text>
-            <Text style={styles.contactItem}>{personal.location}</Text>
-          </View>
-
-          <View style={{ marginBottom: 6 }}>
-            <Text style={styles.contactLabel}>GitHub</Text>
-            <Link href={personal.github} style={styles.link}>
-              <Text style={styles.contactItem}>github.com/ArhumAhmed143</Text>
-            </Link>
-          </View>
-
-          <View style={{ marginBottom: 6 }}>
-            <Text style={styles.contactLabel}>LinkedIn</Text>
-            <Link href={personal.linkedin} style={styles.link}>
-              <Text style={styles.contactItem}>linkedin.com/in/arhum-ahmed</Text>
-            </Link>
-          </View>
-
-          {personal.website && (
-            <View style={{ marginBottom: 6 }}>
-              <Text style={styles.contactLabel}>Featured Platform</Text>
-              <Link href={personal.website} style={styles.link}>
-                <Text style={styles.contactItem}>{personal.website.replace("https://", "").replace(/\/$/, "")}</Text>
+          <View>
+            <Text style={styles.contactLine}>
+              {personal.location} | {personal.phone} |{" "}
+              <Link src={`mailto:${personal.email}`} style={styles.contactLink}>
+                {personal.email}
               </Link>
-            </View>
-          )}
-
-          {/* Key Technologies & Skills */}
-          <Text style={styles.sidebarSectionTitle}>Skills & Tech</Text>
-          <View style={styles.techBadgeContainer}>
-            {technologies.map((tech) => (
-              <Text key={tech} style={styles.techBadge}>
-                {tech}
-              </Text>
-            ))}
-          </View>
-
-          {/* Languages */}
-          <Text style={styles.sidebarSectionTitle}>Languages</Text>
-          {languages.map((lang) => (
-            <Text key={lang} style={styles.contactItem}>
-              • {lang}
             </Text>
-          ))}
+          </View>
         </View>
 
-        {/* RIGHT MAIN CONTENT */}
-        <View style={styles.main}>
-          {/* Executive Summary */}
-          <Text style={styles.mainSectionTitle}>Professional Summary</Text>
-          <Text style={styles.summaryText}>{personal.summary}</Text>
+        {/* ================= 2. OBJECTIVE ================= */}
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}>Objective</Text>
+          <View style={styles.horizontalRule} />
+        </View>
+        <Text style={styles.objectiveText}>
+          As a motivated Software Engineer and Full-Stack Developer with a strong foundation in C#, Object-Oriented Programming (OOP), and programming fundamentals, I am eager to contribute to your team and continue growing as a software developer. I have hands-on experience in building scalable web applications using React.js, Next.js, and TypeScript, backend development with Node.js, Laravel, REST APIs, and software automation systems.
+        </Text>
+        <Text style={styles.objectiveText}>
+          I am passionate about learning new technologies, building clean and user-friendly web applications, and working in a collaborative environment where I can improve my skills and contribute positively to projects.
+        </Text>
 
-          {/* Work Experience */}
-          <Text style={styles.mainSectionTitle}>Experience & Journey</Text>
-          {experience.map((exp, idx) => (
-            <View key={idx} style={styles.blockItem}>
-              <View style={styles.blockHeaderRow}>
-                <Text style={styles.blockTitle}>{exp.title}</Text>
-                <Text style={styles.blockDate}>{exp.period}</Text>
-              </View>
-              <Text style={styles.blockSubtitle}>{exp.role}</Text>
-              <Text style={styles.blockDescription}>{exp.description}</Text>
-            </View>
-          ))}
+        {/* ================= 3. PROFESSIONAL EXPERIENCE / INTERNSHIPS ================= */}
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitleUpper}>EXPERIENCE &amp; INTERNSHIPS</Text>
+          <View style={styles.horizontalRule} />
+        </View>
 
-          {/* Featured Projects */}
-          <Text style={styles.mainSectionTitle}>Featured Projects</Text>
-          {projects.map((proj) => (
-            <View key={proj.id} style={styles.blockItem}>
-              <View style={styles.blockHeaderRow}>
-                <Text style={styles.blockTitle}>{proj.title}</Text>
-                {proj.duration && (
-                  <Text style={styles.blockDate}>{proj.duration}</Text>
-                )}
-              </View>
-              <Text style={styles.blockDescription}>{proj.description}</Text>
-              {proj.highlights.slice(0, 2).map((h, i) => (
-                <Text key={i} style={styles.bulletPoint}>
-                  • {h}
-                </Text>
-              ))}
-              <Text style={styles.projectTechList}>
-                Stack: {proj.tags.join(" • ")}
-              </Text>
-              {proj.demoUrl && (
-                <Link href={proj.demoUrl} style={styles.link}>
-                  <Text style={{ fontSize: 7, color: "#059669", marginTop: 2 }}>
-                    Live URL: {proj.demoUrl}
-                  </Text>
-                </Link>
-              )}
-            </View>
-          ))}
+        <View style={styles.itemBlock}>
+          <View style={styles.twoColRow}>
+            <Text style={styles.orgName}>REVIVE MEDICAL TECHNOLOGIES</Text>
+            <Text style={styles.itemDates}>2026 – Present</Text>
+          </View>
+          <Text style={styles.roleName}>Software Department Intern</Text>
+          <Text style={styles.subDetailText}>
+            • Working in the Software Department on software automation systems, automated API test suites, medical technology applications, and high-reliability full-stack web solutions.
+          </Text>
+        </View>
 
-          {/* Education */}
-          <Text style={styles.mainSectionTitle}>Education</Text>
-          {education.map((edu, idx) => (
-            <View key={idx} style={styles.blockItem}>
-              <View style={styles.blockHeaderRow}>
-                <Text style={styles.blockTitle}>{edu.degree}</Text>
-                <Text style={styles.blockDate}>{edu.period}</Text>
-              </View>
-              <Text style={styles.blockSubtitle}>{edu.institution}</Text>
-              <Text style={styles.blockDescription}>{edu.details}</Text>
-            </View>
-          ))}
+        <View style={styles.itemBlock}>
+          <View style={styles.twoColRow}>
+            <Text style={styles.orgName}>PIG BUG SOLUTION</Text>
+            <Text style={styles.itemDates}>2026 (6 Weeks)</Text>
+          </View>
+          <Text style={styles.roleName}>Web Developer Intern</Text>
+          <Text style={styles.subDetailText}>
+            • Developed responsive web user interfaces and integrated backend REST APIs using Next.js, React, TypeScript, and Tailwind CSS with automated build optimization.
+          </Text>
+        </View>
 
-          {/* Certifications & Achievements */}
-          {certifications.length > 0 && (
-            <>
-              <Text style={styles.mainSectionTitle}>Certifications & Achievements</Text>
-              {certifications.map((cert, idx) => (
-                <Text key={idx} style={styles.bulletPoint}>
-                  • {cert}
-                </Text>
-              ))}
-              {achievements.map((ach, idx) => (
-                <Text key={`ach-${idx}`} style={styles.bulletPoint}>
-                  • {ach}
-                </Text>
-              ))}
-            </>
-          )}
+        {/* ================= 4. PROJECTS ================= */}
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitleUpper}>PROJECTS</Text>
+          <View style={styles.horizontalRule} />
+        </View>
+
+        <View style={styles.bulletItem}>
+          <Text style={styles.bulletPoint}>•</Text>
+          <Text style={styles.bulletText}>SaaS Multi-Tenant Automation Platform</Text>
+        </View>
+
+        <View style={styles.bulletItem}>
+          <Text style={styles.bulletPoint}>•</Text>
+          <Text style={styles.bulletText}>Ahmed Mobile — E-Commerce Web Store</Text>
+        </View>
+
+        <View style={styles.bulletItem}>
+          <Text style={styles.bulletPoint}>•</Text>
+          <Text style={styles.bulletText}>NetPrime — Video Streaming Platform</Text>
+        </View>
+
+        <View style={styles.bulletItem}>
+          <Text style={styles.bulletPoint}>•</Text>
+          <Text style={styles.bulletText}>COVID / Health Statistics Visualizer</Text>
+        </View>
+
+        {/* Featured Detailed Project: Cloud-Based Multi-Store POS */}
+        <View style={styles.bulletItem}>
+          <Text style={styles.bulletPoint}>•</Text>
+          <Text style={styles.bulletText}>Cloud-Based Multi-Store POS &amp; Inventory Management System</Text>
+        </View>
+
+        <View style={styles.projectSubBlock}>
+          <Text style={styles.projectDescription}>
+            (A comprehensive multi-location cloud-based Point of Sale (POS) and inventory management Progressive Web Application designed for enterprise retail businesses. The system enables real-time inventory tracking across multiple branch stores with automated background synchronization, barcode scanning, offline transaction processing, staff role-based access control, receipt generation, and automated daily/monthly financial analytics. It allows store managers to manage suppliers, purchase orders, customer ledgers, and cash registers with automated low-stock threshold alerts.
+          </Text>
+          <Text style={styles.projectSubHeading}>For development, we used:</Text>
+          <Text style={styles.projectTechLine}>Next.js, React.js, TypeScript, and Tailwind CSS for the frontend</Text>
+          <Text style={styles.projectTechLine}>Laravel &amp; Node.js RESTful APIs for backend and transaction services</Text>
+          <Text style={styles.projectTechLine}>PostgreSQL and MySQL for database &amp; multi-branch ledger synchronization</Text>
+          <Text style={styles.projectTechLine}>Offline PWA Service Workers with IndexedDB for offline resilience</Text>
+          <Text style={styles.projectTechLine}>Multiple APIs for automated reporting and barcode generation)</Text>
+        </View>
+
+        {/* ================= 5. EDUCATION ================= */}
+        <View style={styles.sectionContainer}>
+          <View style={styles.twoColRow}>
+            <Text style={styles.orgName}>FOUNDATION UNIVERSITY ISLAMABAD, BSc (IET)</Text>
+            <Text style={styles.itemDates}>09/2023 – 2027</Text>
+          </View>
+          <Text style={{ fontSize: 8.5, fontFamily: "Helvetica", color: "#222222", marginBottom: 3 }}>
+            Bachelor of Science in Information Engineering Technology
+          </Text>
+
+          <View style={styles.twoColRow}>
+            <Text style={styles.orgName}>ASKARIA COLLEGE BOYS SADDAR RAWALPINDI</Text>
+            <Text style={styles.itemDates}>04/2021 – 06/2022</Text>
+          </View>
+          <Text style={{ fontSize: 8.5, fontFamily: "Helvetica", color: "#222222" }}>
+            ICS (Intermediate in Computer Science)
+          </Text>
+        </View>
+
+        {/* ================= 6. SKILLS & ABILITIES ================= */}
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}>Skills &amp; abilities</Text>
+          <View style={styles.horizontalRule} />
+
+          <View style={styles.skillLine}>
+            <Text style={styles.bulletPoint}>•</Text>
+            <Text style={styles.skillItemsText}>
+              <Text style={styles.skillCategoryTitle}>Backend Technologies: </Text>
+              Node.js, Express, Laravel, REST APIs, PHP, C#
+            </Text>
+          </View>
+
+          <View style={styles.skillLine}>
+            <Text style={styles.bulletPoint}>•</Text>
+            <Text style={styles.skillItemsText}>
+              <Text style={styles.skillCategoryTitle}>Frontend Technologies: </Text>
+              React.js, Next.js, TypeScript, JavaScript, HTML, CSS, Tailwind CSS
+            </Text>
+          </View>
+
+          <View style={styles.skillLine}>
+            <Text style={styles.bulletPoint}>•</Text>
+            <Text style={styles.skillItemsText}>
+              <Text style={styles.skillCategoryTitle}>Database &amp; Cloud: </Text>
+              MS SQL Server, MySQL, Firebase, PostgreSQL, MongoDB, Render
+            </Text>
+          </View>
+
+          <View style={styles.skillLine}>
+            <Text style={styles.bulletPoint}>•</Text>
+            <Text style={styles.skillItemsText}>
+              <Text style={styles.skillCategoryTitle}>Programming Languages: </Text>
+              TypeScript, JavaScript, C#, C++, Java, Python
+            </Text>
+          </View>
+
+          <View style={styles.skillLine}>
+            <Text style={styles.bulletPoint}>•</Text>
+            <Text style={styles.skillItemsText}>
+              <Text style={styles.skillCategoryTitle}>Soft Skills: </Text>
+              Analytical Thinking, Problem Solving, Team Collaboration, Adaptability, Time Management
+            </Text>
+          </View>
         </View>
       </Page>
     </Document>

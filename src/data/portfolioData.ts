@@ -200,11 +200,18 @@ export const portfolioData: PortfolioData = {
 
   education: [
     {
-      degree: "BS Information Engineering Technology",
-      institution: "Foundation University Islamabad",
-      period: "2023 - Present",
+      degree: "Bachelor of Science in Information Engineering Technology",
+      institution: "FOUNDATION UNIVERSITY ISLAMABAD, BSc (IET)",
+      period: "09/2023 – 2027",
       details:
         "Focusing on software engineering principles, automated systems, web technologies, database management, and network infrastructure.",
+    },
+    {
+      degree: "ICS",
+      institution: "ASKARIA COLLEGE BOYS SADDAR RAWALPINDI",
+      period: "04/2021 – 06/2022",
+      details:
+        "Intermediate in Computer Science with core focus on mathematics, physics, and computer science fundamentals.",
     },
   ],
 
@@ -283,6 +290,24 @@ export const portfolioData: PortfolioData = {
 
   projects: [
     {
+      id: "cloud-pos",
+      title: "Cloud-Based Multi-Store POS & Inventory System",
+      category: "Full Stack",
+      duration: "2024 - 2025",
+      description:
+        "A multi-store cloud-based Point of Sale and inventory system with real-time multi-branch sync automation, offline-capable PWA, sales reporting, and role-based staff access.",
+      longDescription:
+        "A comprehensive multi-location cloud-based Point of Sale (POS) and inventory management Progressive Web Application designed for enterprise retail businesses. The system enables real-time inventory tracking across multiple branch stores with automated background synchronization, barcode scanning, offline transaction processing, staff role-based access control, receipt generation, and automated daily/monthly financial analytics. It allows store managers to manage suppliers, purchase orders, customer ledgers, and cash registers with automated low-stock threshold alerts.",
+      highlights: [
+        "Multi-store inventory management with automated real-time background sync",
+        "Offline-capable PWA with IndexedDB and automated background synchronization",
+        "Comprehensive sales reporting and automated financial analytics dashboard",
+        "Role-based staff authentication, receipt generation, and barcode scanning",
+      ],
+      tags: ["Next.js", "React", "TypeScript", "Laravel", "PostgreSQL", "PWA", "Automation"],
+      githubUrl: "https://github.com/ArhumAhmed143",
+    },
+    {
       id: "saas-tenant",
       title: "SaaS Multi-Tenant Automation Platform",
       category: "Automation",
@@ -318,24 +343,6 @@ export const portfolioData: PortfolioData = {
       ],
       tags: ["React", "TypeScript", "Tailwind CSS", "Vite", "E-Commerce"],
       demoUrl: "https://ahmed-mobile.vercel.app/",
-      githubUrl: "https://github.com/ArhumAhmed143",
-    },
-    {
-      id: "cloud-pos",
-      title: "Cloud-Based Multi-Store POS",
-      category: "Full Stack",
-      duration: "2024",
-      description:
-        "A progressive web app for managing point-of-sale operations across multiple store locations, with real-time inventory sync automation, sales reporting, and offline support.",
-      longDescription:
-        "An enterprise-grade multi-location POS and inventory management Progressive Web App. Built with Next.js, Laravel REST API, and PostgreSQL, it enables business owners to manage sales, track stock inventory across multiple branches with automated background synchronization, generate financial analytics, and operate smoothly offline.",
-      highlights: [
-        "Multi-store inventory management with automated real-time sync",
-        "Offline-capable PWA with automated background data synchronization",
-        "Comprehensive sales reporting and automated analytics dashboard",
-        "Role-based staff authentication and receipt generation",
-      ],
-      tags: ["Next.js", "Laravel", "TypeScript", "PWA", "PostgreSQL", "Automation"],
       githubUrl: "https://github.com/ArhumAhmed143",
     },
     {

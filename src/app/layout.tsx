@@ -13,18 +13,23 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ghulam Ahmed | Full-Stack Developer",
+  title: "Ghulam Ahmed | Software Department Intern @ Revive Medical Technologies | Full-Stack & Automation",
   description:
-    "Portfolio of Ghulam Ahmed — a Full-Stack Developer and BS Information Engineering Technology student building web applications with Next.js, React, TypeScript, and Laravel.",
+    "Portfolio of Ghulam Ahmed — Software Department Intern at Revive Medical Technologies, building scalable web applications, automation systems & AI-powered solutions.",
   keywords: [
     "Ghulam Ahmed",
+    "Revive Medical Technologies",
+    "Software Department Intern",
+    "Software Automation",
     "Full-Stack Developer",
+    "Software Engineer",
+    "Automation Engineer",
+    "AI Developer",
+    "Render",
+    "Brevo",
     "Next.js",
     "React",
     "TypeScript",
-    "Laravel",
-    "Portfolio",
-    "Web Developer Pakistan",
   ],
   authors: [{ name: "Ghulam Ahmed" }],
 };

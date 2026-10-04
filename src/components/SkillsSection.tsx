@@ -1,102 +1,89 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Code2, Database, Wrench } from "lucide-react";
+import { Code2, Database, Wrench, Cpu } from "lucide-react";
+import { portfolioData } from "@/data/portfolioData";
+import AnimatedHeading from "./AnimatedHeading";
 
-const skillCategories = [
-  {
-    category: "Frontend",
-    icon: Code2,
-    color: "bg-emerald-500",
-    skills: [
-      { name: "Next.js (App Router)", level: "Comfortable", desc: "Server Components, SSR, Dynamic Routing" },
-      { name: "React", level: "Comfortable", desc: "Hooks, Context, Component Patterns" },
-      { name: "TypeScript", level: "Comfortable", desc: "Strict Typing, Interfaces, Generics" },
-      { name: "Tailwind CSS", level: "Comfortable", desc: "Responsive Layouts, Custom Config, Animations" },
-      { name: "HTML5 / CSS3", level: "Strong", desc: "Semantic Markup, Flexbox, Grid, Custom Properties" },
-      { name: "Framer Motion", level: "Learning", desc: "Scroll Animations, Page Transitions" },
-    ],
-  },
-  {
-    category: "Backend & Databases",
-    icon: Database,
-    color: "bg-blue-500",
-    skills: [
-      { name: "Laravel", level: "Comfortable", desc: "MVC, Eloquent ORM, API Development" },
-      { name: "Node.js", level: "Familiar", desc: "Express, Async I/O, NPM Ecosystem" },
-      { name: "PostgreSQL", level: "Familiar", desc: "Relational Queries, Schema Design" },
-      { name: "MongoDB", level: "Familiar", desc: "Document Stores, Aggregation Pipelines" },
-      { name: "REST APIs", level: "Comfortable", desc: "API Design, Authentication, Fetch/Axios" },
-      { name: "Prisma ORM", level: "Learning", desc: "Type-safe Queries, Migrations" },
-    ],
-  },
-  {
-    category: "Tools & Workflow",
-    icon: Wrench,
-    color: "bg-violet-500",
-    skills: [
-      { name: "Git & GitHub", level: "Comfortable", desc: "Branching, Pull Requests, Collaboration" },
-      { name: "Vercel / Deployment", level: "Comfortable", desc: "CI/CD, Environment Variables, Previews" },
-      { name: "VS Code", level: "Daily Driver", desc: "ESLint, Prettier, Debugging" },
-      { name: "Docker", level: "Basic", desc: "Containerization, Docker Compose" },
-      { name: "Postman", level: "Familiar", desc: "API Testing, Collections" },
-      { name: "Solidity / Web3", level: "Explored", desc: "Smart Contracts, Web3.js Integration" },
-    ],
-  },
-];
+const iconMap: Record<string, typeof Code2> = {
+  Code2,
+  Database,
+  Wrench,
+  Cpu,
+};
 
 export default function SkillsSection() {
+  const { skillCategories } = portfolioData;
+
   return (
-    <section id="skills" className="section-dark py-24 px-4 sm:px-6 lg:px-8 relative">
+    <section id="skills" className="section-dark py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <p className="text-sm font-semibold text-emerald-400 uppercase tracking-widest mb-3">
-            Tech Stack
-          </p>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-            Technologies I Work With
-          </h2>
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16">
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.35 }}
+            className="text-xs sm:text-sm font-semibold text-emerald-400 uppercase tracking-widest mb-2 sm:mb-3"
+          >
+            Automation &amp; Engineering Stack
+          </motion.p>
+          <AnimatedHeading
+            text="Technologies & Automation Tools"
+            highlightWords={["Automation", "Tools"]}
+            highlightClassName="text-emerald-400"
+            className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight"
+          />
         </div>
 
-        {/* Categories Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {skillCategories.map((cat, catIdx) => (
-            <motion.div
-              key={cat.category}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: catIdx * 0.15 }}
-              className="card-dark p-6"
-            >
-              {/* Category Header */}
-              <div className="flex items-center gap-3 mb-6 pb-4 border-b border-white/8">
-                <div className={`p-2.5 rounded-xl ${cat.color} text-white`}>
-                  <cat.icon className="w-5 h-5" />
-                </div>
-                <h3 className="text-lg font-bold text-white">{cat.category}</h3>
-              </div>
-
-              {/* Skill List */}
-              <div className="space-y-3">
-                {cat.skills.map((skill) => (
-                  <div
-                    key={skill.name}
-                    className="p-3 rounded-xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.06] transition-colors"
-                  >
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="font-medium text-slate-200 text-sm">{skill.name}</span>
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/8 text-slate-400">
-                        {skill.level}
-                      </span>
-                    </div>
-                    <p className="text-xs text-slate-500">{skill.desc}</p>
+        {/* Categories Grid — Staggered Card Reveals */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {skillCategories.map((cat, catIdx) => {
+            const IconComponent = iconMap[cat.iconName] || Code2;
+            return (
+              <motion.div
+                key={cat.category}
+                initial={{ opacity: 0, y: 24, scale: 0.97 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.42, delay: catIdx * 0.09, ease: "easeOut" }}
+                className="card-dark p-5 sm:p-6 hover:border-emerald-500/30 transition-all duration-300 group"
+              >
+                {/* Category Header */}
+                <div className="flex items-center gap-3 mb-5 sm:mb-6 pb-4 border-b border-white/8">
+                  <div className={`p-2.5 rounded-xl ${cat.color} text-white shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                    <IconComponent className="w-5 h-5" />
                   </div>
-                ))}
-              </div>
-            </motion.div>
-          ))}
+                  <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-emerald-300 transition-colors">
+                    {cat.category}
+                  </h3>
+                </div>
+
+                {/* Skill List */}
+                <div className="space-y-3">
+                  {cat.skills.map((skill, sIdx) => (
+                    <motion.div
+                      key={skill.name}
+                      initial={{ opacity: 0, x: -8 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.3, delay: 0.15 + sIdx * 0.05 }}
+                      className="p-3 rounded-xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.07] hover:border-emerald-500/20 transition-all duration-200"
+                    >
+                      <div className="flex items-center justify-between gap-2 mb-1">
+                        <span className="font-medium text-slate-200 text-xs sm:text-sm">{skill.name}</span>
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/8 text-slate-400 shrink-0">
+                          {skill.level}
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-500 leading-snug">{skill.desc}</p>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

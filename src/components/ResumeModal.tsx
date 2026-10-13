@@ -134,8 +134,8 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             </div>
 
             {/* Resume Document Paper Viewport */}
-            <div className="flex-1 overflow-y-auto p-4 sm:p-8 bg-[#0a0a14] flex justify-center">
-              <div className="w-full max-w-[800px] bg-white text-black p-6 sm:p-12 sm:px-14 shadow-2xl rounded-sm font-sans text-[13px] leading-relaxed selection:bg-emerald-100 selection:text-black">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-8 bg-[#0a0a14]">
+              <div className="w-full max-w-[800px] mx-auto bg-white text-black p-6 sm:p-12 sm:px-14 shadow-2xl rounded-sm font-sans text-[13px] leading-relaxed selection:bg-emerald-100 selection:text-black">
                 {/* 1. Header (Centered with strict vertical separation) */}
                 <div className="text-center mb-6 pb-2">
                   <h1 className="text-2xl sm:text-3xl font-extrabold tracking-wide text-black uppercase mb-2">

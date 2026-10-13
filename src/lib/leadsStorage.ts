@@ -211,3 +211,92 @@ export async function getLeadsSummary(): Promise<LeadsSummary> {
     rejectedLeads: leads.filter((l) => l.status === "REJECTED").length,
   };
 }
+
+export async function saveOrUpdateChatLead(params: {
+  sessionId: string;
+  userMessage: string;
+  assistantMessage?: string;
+  serviceRequested?: string;
+  extractedEmail?: string;
+  extractedPhone?: string;
+  extractedName?: string;
+}): Promise<Lead> {
+  const leads = await getLeads();
+  const cleanEmail = params.extractedEmail?.trim().toLowerCase();
+  const cleanPhone = params.extractedPhone?.trim();
+  const cleanName = params.extractedName?.trim();
+
+  const existingIndex = leads.findIndex(
+    (l) =>
+      l.id === `chat_${params.sessionId}` ||
+      (cleanEmail && l.email && l.email.toLowerCase() === cleanEmail)
+  );
+
+  const newSnippetEntry = [
+    { role: "user" as const, content: params.userMessage },
+    ...(params.assistantMessage
+      ? [{ role: "assistant" as const, content: params.assistantMessage }]
+      : []),
+  ];
+
+  if (existingIndex !== -1) {
+    const existing = leads[existingIndex];
+    const updatedSnippet = [
+      ...(existing.conversationSnippet || []),
+      ...newSnippetEntry,
+    ].slice(-16);
+
+    const hasRealEmail = cleanEmail || (existing.email && existing.email.includes("@"));
+    const updatedLead: Lead = {
+      ...existing,
+      email: cleanEmail || existing.email,
+      name:
+        cleanName ||
+        (existing.name.includes("Website Visitor") && cleanEmail
+          ? cleanEmail.split("@")[0]
+          : existing.name),
+      projectDescription: `${existing.projectDescription}\n\n[Latest query]: ${params.userMessage}`,
+      status: hasRealEmail ? "QUALIFIED" : existing.status,
+      serviceRequested: params.serviceRequested || existing.serviceRequested,
+      conversationSnippet: updatedSnippet,
+      conversationSummary: `Latest query: "${params.userMessage.slice(0, 160)}"`,
+      notes: cleanPhone
+        ? existing.notes
+          ? `${existing.notes} | Phone: ${cleanPhone}`
+          : `Phone: ${cleanPhone}`
+        : existing.notes,
+      updatedAt: new Date().toISOString(),
+    };
+
+    leads[existingIndex] = updatedLead;
+    writeLeadsToDisk(leads);
+    return updatedLead;
+  } else {
+    const hasRealEmail = Boolean(cleanEmail);
+    const newLead: Lead = {
+      id: `chat_${params.sessionId}`,
+      name:
+        cleanName ||
+        (cleanEmail ? cleanEmail.split("@")[0] : "Website Visitor (Chatbot)"),
+      email: cleanEmail || "Chatbot Visitor (No email provided)",
+      company: undefined,
+      serviceRequested: params.serviceRequested || "Chatbot Portfolio Inquiry",
+      projectType: "AI Chatbot Conversation",
+      projectDescription: params.userMessage,
+      budgetRange: "Discuss via Chat",
+      expectedTimeline: "Flexible",
+      status: hasRealEmail ? "QUALIFIED" : "NEW",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      source: "ai_agent",
+      conversationSnippet: newSnippetEntry,
+      conversationSummary: `Inquiry via AI Chat: "${params.userMessage.slice(0, 160)}"`,
+      notes: cleanPhone ? `Phone: ${cleanPhone}` : undefined,
+    };
+
+    leads.unshift(newLead);
+    writeLeadsToDisk(leads);
+    return newLead;
+  }
+}
+

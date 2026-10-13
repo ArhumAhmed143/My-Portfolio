@@ -308,7 +308,7 @@ export default function AdminLeadsPage() {
             </button>
           </form>
 
-          <div className="mt-6 pt-4 border-t border-white/10 text-xs text-slate-500 flex items-center justify-between">
+          <div className="mt-6 pt-4 border-t border-white/10 text-xs text-slate-500 flex items-center justify-center">
             <Link
               href="/"
               className="inline-flex items-center gap-1 text-slate-400 hover:text-emerald-400 transition-colors"
@@ -316,7 +316,6 @@ export default function AdminLeadsPage() {
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Back to Portfolio</span>
             </Link>
-            <span className="font-mono text-[11px] text-slate-600">Default: ghulam-admin-2026</span>
           </div>
         </div>
       </div>
@@ -498,12 +497,18 @@ export default function AdminLeadsPage() {
                             </span>
                           )}
                         </div>
-                        <a
-                          href={`mailto:${lead.email}`}
-                          className="text-xs text-emerald-400 hover:underline font-mono"
-                        >
-                          {lead.email}
-                        </a>
+                        {lead.email && lead.email.includes("@") ? (
+                          <a
+                            href={`mailto:${lead.email}`}
+                            className="text-xs text-emerald-400 hover:underline font-mono"
+                          >
+                            {lead.email}
+                          </a>
+                        ) : (
+                          <span className="text-xs text-slate-400 font-mono italic">
+                            {lead.email || "No email provided"}
+                          </span>
+                        )}
                       </div>
 
                       {/* Status Dropdown */}
@@ -688,13 +693,17 @@ export default function AdminLeadsPage() {
               </div>
 
               <div className="flex items-center justify-between pt-3 border-t border-white/10">
-                <a
-                  href={`mailto:${selectedLead.email}?subject=Project%20Scope%20Review%20%E2%80%94%20Ghulam%20Ahmed`}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold transition-colors"
-                >
-                  <Mail className="w-3.5 h-3.5" />
-                  <span>Send Direct Email</span>
-                </a>
+                {selectedLead.email && selectedLead.email.includes("@") ? (
+                  <a
+                    href={`mailto:${selectedLead.email}?subject=Project%20Scope%20Review%20%E2%80%94%20Ghulam%20Ahmed`}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold transition-colors"
+                  >
+                    <Mail className="w-3.5 h-3.5" />
+                    <span>Send Direct Email</span>
+                  </a>
+                ) : (
+                  <span className="text-xs text-slate-400 italic">No email provided</span>
+                )}
 
                 <div className="flex items-center gap-2">
                   <button

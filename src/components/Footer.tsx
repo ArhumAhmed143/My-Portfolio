@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronUp, Heart } from "lucide-react";
+import { ChevronUp } from "lucide-react";
 import { portfolioData } from "@/data/portfolioData";
 
 export default function Footer() {
@@ -29,13 +29,6 @@ export default function Footer() {
           >
             View Resume
           </button>
-        </div>
-
-        {/* Quick Info */}
-        <div className="text-xs text-slate-500 text-center flex flex-wrap items-center justify-center gap-1.5">
-          <span>Built with</span>
-          <Heart className="w-3 h-3 text-rose-500 fill-rose-500 inline" />
-          <span>using Next.js, TypeScript & Tailwind CSS</span>
         </div>
 
         {/* Back to Top */}

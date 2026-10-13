@@ -22,6 +22,7 @@ interface LeadQualificationFormProps {
   onSuccess: (leadSummary: string) => void;
   onCancel: () => void;
   conversationSnippet?: Array<{ role: "user" | "assistant"; content: string }>;
+  sessionId?: string;
 }
 
 const BUDGET_OPTIONS = [
@@ -43,6 +44,7 @@ export default function LeadQualificationForm({
   onSuccess,
   onCancel,
   conversationSnippet,
+  sessionId,
 }: LeadQualificationFormProps) {
   const [step, setStep] = useState<number>(1);
   const [service, setService] = useState<string>("Full-Stack Web Development");
@@ -127,6 +129,7 @@ export default function LeadQualificationForm({
             120
           )}...`,
           conversationSnippet,
+          sessionId,
         }),
       });
 

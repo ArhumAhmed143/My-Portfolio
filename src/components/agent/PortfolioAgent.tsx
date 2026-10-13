@@ -56,6 +56,14 @@ export default function PortfolioAgent() {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const sessionIdRef = useRef<string>("");
+
+  // Initialize session ID
+  useEffect(() => {
+    if (!sessionIdRef.current) {
+      sessionIdRef.current = `sess_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    }
+  }, []);
 
   // Auto-scroll on new message
   useEffect(() => {
@@ -85,6 +93,10 @@ export default function PortfolioAgent() {
     const query = (textToSend || inputValue).trim();
     if (!query || isTyping) return;
 
+    if (!sessionIdRef.current) {
+      sessionIdRef.current = `sess_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    }
+
     const userMsg: ChatMessage = {
       id: `usr_${Date.now()}`,
       role: "user",
@@ -111,7 +123,10 @@ export default function PortfolioAgent() {
       const res = await fetch("/api/agent/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: query }),
+        body: JSON.stringify({
+          message: query,
+          sessionId: sessionIdRef.current,
+        }),
       });
 
       const data = await res.json();
@@ -174,6 +189,7 @@ export default function PortfolioAgent() {
   };
 
   const handleResetChat = () => {
+    sessionIdRef.current = `sess_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
     setShowLeadForm(false);
     setMessages([
       {
@@ -441,6 +457,7 @@ export default function PortfolioAgent() {
               {/* Inline Lead Qualification Wizard */}
               {showLeadForm && (
                 <LeadQualificationForm
+                  sessionId={sessionIdRef.current}
                   onSuccess={(leadSummary) => {
                     setShowLeadForm(false);
                     setMessages((prev) => [

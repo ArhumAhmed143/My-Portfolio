@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createLead } from "@/lib/leadsStorage";
+import { createLead, getLeads, writeLeadsToDisk } from "@/lib/leadsStorage";
 import {
   sendNewLeadAdminNotification,
   sendLeadVisitorConfirmation,
@@ -27,6 +27,7 @@ export async function POST(req: Request) {
       expectedTimeline,
       conversationSummary,
       conversationSnippet,
+      sessionId,
     } = body;
 
     // 1. Validation
@@ -99,23 +100,52 @@ export async function POST(req: Request) {
     const cleanTimeline = sanitize(expectedTimeline || "Flexible");
     const cleanSummary = sanitize(conversationSummary || "");
 
-    // 3. Create persistent structured lead
-    const newLead = await createLead({
-      name: cleanName,
-      email: cleanEmail,
-      company: cleanCompany || undefined,
-      serviceRequested: cleanService,
-      projectType: cleanProjectType,
-      projectDescription: cleanDescription,
-      budgetRange: cleanBudget,
-      expectedTimeline: cleanTimeline,
-      source: "ai_agent",
-      status: "QUALIFIED",
-      conversationSummary: cleanSummary,
-      conversationSnippet: Array.isArray(conversationSnippet)
-        ? conversationSnippet.slice(-8)
-        : undefined,
-    });
+    // 3. Create or update persistent structured lead
+    let newLead;
+    const leads = await getLeads();
+    const existingIndex = sessionId
+      ? leads.findIndex((l) => l.id === `chat_${sessionId}`)
+      : -1;
+
+    if (existingIndex !== -1) {
+      const existing = leads[existingIndex];
+      newLead = {
+        ...existing,
+        name: cleanName,
+        email: cleanEmail,
+        company: cleanCompany || undefined,
+        serviceRequested: cleanService,
+        projectType: cleanProjectType,
+        projectDescription: cleanDescription,
+        budgetRange: cleanBudget,
+        expectedTimeline: cleanTimeline,
+        status: "QUALIFIED" as const,
+        conversationSummary: cleanSummary,
+        conversationSnippet: Array.isArray(conversationSnippet)
+          ? conversationSnippet.slice(-12)
+          : existing.conversationSnippet,
+        updatedAt: new Date().toISOString(),
+      };
+      leads[existingIndex] = newLead;
+      writeLeadsToDisk(leads);
+    } else {
+      newLead = await createLead({
+        name: cleanName,
+        email: cleanEmail,
+        company: cleanCompany || undefined,
+        serviceRequested: cleanService,
+        projectType: cleanProjectType,
+        projectDescription: cleanDescription,
+        budgetRange: cleanBudget,
+        expectedTimeline: cleanTimeline,
+        source: "ai_agent",
+        status: "QUALIFIED",
+        conversationSummary: cleanSummary,
+        conversationSnippet: Array.isArray(conversationSnippet)
+          ? conversationSnippet.slice(-12)
+          : undefined,
+      });
+    }
 
     // 4. Automated Brevo Email Triggers (Non-blocking errors)
     let emailDispatched = false;

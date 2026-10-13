@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { createLead } from "@/lib/leadsStorage";
 
 export async function POST(req: Request) {
   try {
@@ -57,6 +58,24 @@ export async function POST(req: Request) {
     const cleanEmail = email.trim();
     const cleanSubject = subject?.trim() || `New Portfolio Message from ${cleanName}`;
     const cleanMessage = message.trim();
+
+    // Persist lead into database for admin panel visibility
+    try {
+      await createLead({
+        name: cleanName,
+        email: cleanEmail,
+        serviceRequested: cleanSubject,
+        projectType: "Contact Form Message",
+        projectDescription: cleanMessage,
+        budgetRange: "General Inquiry",
+        expectedTimeline: "Direct Message",
+        source: "contact_form",
+        status: "NEW",
+        conversationSummary: `Direct message sent from portfolio contact form: "${cleanSubject}"`,
+      });
+    } catch (saveLeadErr) {
+      console.warn("[Contact API] Failed to save lead to storage:", saveLeadErr);
+    }
 
     // Call Brevo Transactional Email Endpoint
     const brevoResponse = await fetch("https://api.brevo.com/v3/smtp/email", {

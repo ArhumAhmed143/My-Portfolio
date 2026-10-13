@@ -8,7 +8,7 @@ import {
 } from "@/lib/leadsStorage";
 
 function verifyAdminAuth(req: Request): boolean {
-  const passcode = process.env.ADMIN_PASSCODE || "ghulam-admin-2026";
+  const passcode = process.env.ADMIN_PASSCODE || "Arhum143";
   const headerCode = req.headers.get("x-admin-passcode");
   const authHeader = req.headers.get("authorization");
 

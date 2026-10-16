@@ -92,7 +92,7 @@ export const portfolioData: PortfolioData = {
     whatsapp: "+92 323 5678381",
     location: "Islamabad, Pakistan",
     github: "https://github.com/ArhumAhmed143",
-    linkedin: "https://www.linkedin.com/in/arhum-ahmed-4b811b441/",
+    linkedin: "https://www.linkedin.com/in/ghulam-ahmed-876722443/",
     website: "https://saas-tenant-frontend.onrender.com",
     summary:
       "Software Department Intern at Revive Medical Technologies and BS Information Engineering Technology student at Foundation University Islamabad. Specialized in software automation, cloud deployments on Render, automated workflows with Brevo, scalable multi-tenant SaaS architecture, and modern full-stack web engineering with Next.js, React, TypeScript, and Node.js.",

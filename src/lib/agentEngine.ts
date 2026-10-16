@@ -485,7 +485,7 @@ export function processAgentQuery(query: string): AgentResponse {
         "• **Email**: [ahmedghulam622@gmail.com](mailto:ahmedghulam622@gmail.com)\n" +
         "• **WhatsApp**: [+92 323 5678381](https://wa.me/923235678381)\n" +
         "• **Location**: Islamabad, Pakistan\n" +
-        "• **LinkedIn**: [linkedin.com/in/arhum-ahmed-4b811b441](https://www.linkedin.com/in/arhum-ahmed-4b811b441/)\n" +
+        "• **LinkedIn**: [linkedin.com/in/ghulam-ahmed-876722443](https://www.linkedin.com/in/ghulam-ahmed-876722443/)\n" +
         "• **GitHub**: [github.com/ArhumAhmed143](https://github.com/ArhumAhmed143)\n\n" +
         "Would you like me to start the project qualification flow to send your inquiry straight to his inbox?",
       actionType: "qualification_prompt",
